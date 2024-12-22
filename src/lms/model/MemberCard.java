@@ -12,6 +12,7 @@ public class MemberCard {
     public MemberCard(long memberId, PersonalDetails details) {
         this.memberId = memberId;
         this.details = details;
+        this.enabled = Boolean.TRUE;
         this.borrowedBooks = new ArrayList<>();
     }
 
