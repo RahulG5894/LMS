@@ -10,21 +10,21 @@ import java.util.Scanner;
 public class Simulation {
     public static void main(String[] args) {
         // Library Object created for env setup
-        Admin admin = LibraryGenerator.generate();
-        admin.addMember(MemberType.USER, new PersonalDetails("Tarun", 20, Gender.MALE, "WestBenal, India", "ShaShib College of Tech", LocalDateTime.now()));
+        Admin admin = (Admin) LibraryGenerator.generate();
 
+        admin.getMemberManager().addUser(new PersonalDetails("Tarun", 20, Gender.MALE, "WestBenal, India", "ShaShib College of Tech", LocalDateTime.now()));
         Scanner sc = new Scanner(System.in);
         System.out.println("Welcome to Bhagat Singh Library \nPlease select 1 for Admin Login and 2 for User Login");
         int id = sc.nextInt();
         switch (id) {
             case 1 -> {
                 System.out.println("Books available:");
-                for(Book book: admin.getBooksList()) {
+                for(Book book: admin.getInventoryManager().getBooksList()) {
                     System.out.println(book.toString());
                 }
                 System.out.println("Registered Users List : ");
-                for(MemberCard card: admin.getMemberCards()) {
-                    if(card.getMemberId() != admin.getCard().getMemberId()) {
+                for(MemberCard card: admin.getMemberManager().getMemberCards()) {
+                    if(card.getMemberId() != admin.getMemCard().getMemberId()) {
                         System.out.println("Card Id: " + card.getMemberId()+"\n" + card.getDetails());
                     }
                 }
@@ -50,7 +50,7 @@ public class Simulation {
                             System.out.println("Enter -1 once listed all the books, else continue entering the book Id");
                             bookId = sc.nextInt();
                         }
-                        System.out.println("RETURN BOOKS : " + admin.returnBooks(cardId, booksId));
+                        System.out.println("RETURN BOOKS : " + admin.getInventoryManager().returnBooks(cardId, booksId));
                     }
                     if (input == 3) {
                         System.out.println("You are lending books to the user, Please enter the Card Id");
@@ -63,7 +63,7 @@ public class Simulation {
                             System.out.println("Enter -1 once listed all the books, else continue entering the book Id");
                             bookId = sc.nextInt();
                         }
-                        System.out.println("BORROW BOOKS : " + admin.borrowBooks(cardId, booksId));
+                        System.out.println("BORROW BOOKS : " + admin.getInventoryManager().borrowBooks(cardId, booksId));
                     }
                     if (input == 2) {
                         System.out.println("Please enter the card id to enable the user:");
@@ -74,7 +74,7 @@ public class Simulation {
                             System.out.println("Enter -1 once listed all the users, else continue entering the User Id");
                             cardId = sc.nextInt();
                         }
-                        List<String> errors = admin.enableUser(cardIds, Boolean.FALSE);
+                        List<String> errors = admin.getMemberManager().enableMember(cardIds, Boolean.FALSE);
                         if(errors.size() > 0) {
                             for(String err: errors) {
                                 System.out.println(err);
@@ -90,7 +90,7 @@ public class Simulation {
                             System.out.println("Enter -1 once listed all the users, else continue entering the User Id");
                             cardId = sc.nextInt();
                         }
-                        List<String> errors = admin.enableUser(cardIds, Boolean.TRUE);
+                        List<String> errors = admin.getMemberManager().enableMember(cardIds, Boolean.TRUE);
                         if(errors.size() > 0) {
                             for(String err: errors) {
                                 System.out.println(err);
